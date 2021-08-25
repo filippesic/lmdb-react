@@ -1,102 +1,95 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {fetchVideo} from "../actions";
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import '../responsiveiFrame.css'
 
-class Video extends React.Component {
-    componentDidMount() {
-        const {id} = this.props.match.params;
+const Video = (props) => {
+    const dispatch = useDispatch();
+    const videos = useSelector(state => state.videos);
 
-        this.props.fetchVideo(id);
-    }
+    useEffect(() => {
+        const {id} = props.match.params;
+        dispatch(fetchVideo(id));
+    },[])
 
-    renderArtists() {
-        if (this.props.videos.artists) {
-            const {artists} = this.props.videos;
+    const renderArtists = ({artists}) => {
+        if (artists) {
             return artists.map(artist => {
                 const {id, name, surname} = artist;
-                return (
-                    <p key={id}>{`${name} ${surname}`}</p>
-                );
+                return <p key={id}>{`${name} ${surname}`}</p>;
             })
         }
-    }
+    };
 
-    renderGenres() {
-        if (this.props.videos.genres) {
-            const {genres} = this.props.videos;
+    const renderGenres = ({genres}) => {
+        if (genres) {
             return genres.map(artist => {
                 const {id, name} = artist;
                 return (
-                    <p key={id} className="d-inline">
-                        <small className="text-muted">
-                            {`${name} `}
-                        </small>
+                    <p key={id} className="d-inline text-center mx-1">
+                        {`${name} `}
                     </p>
                 );
             })
         }
-    }
+    };
 
-    renderTypes() {
-        return this.props.videos.type.map(type => {
+    const renderTypes = ({type}) => {
+        return type.map(type => {
             return (
-                <span>
-                    {type.type}<i className="bi bi-dot"/>
-                </span>
+                <span key={type}>{type.type}<i className="bi bi-dot"/></span>
             );
         })
-    }
+    };
 
-    render() {
-        // console.log(this.props)
-        if (this.props.videos.release_date) {
+        if (videos.release_date) {
             return (
                 <div className="card col-10 mx-auto my-5">
                     <div className="row g-0">
-                        <div className="col-md-3">
-                            <img src={this.props.videos.poster} className="img-fluid rounded-start" alt="..."/>
-                            <div className="col ms-2">{this.renderGenres()}</div>
+                        <div className="col-md-3 text-md-center text-end">
+                            <img src={videos.poster} className="w-100 rounded-start" style={{ objectFit: 'contain' }} alt="..."/>
+                            {renderGenres(videos)}
+                            {/*<div className="col ms-2">{renderGenres(videos)}</div>*/}
                         </div>
                         <div className="col-md-8">
                             <div className="card-body pt-1">
-                                <h5 className="card-title">
-                                    {this.props.videos.name}
-                                </h5>
-
+                                <h5 className="card-title"><b className="fs-3">{videos.name}</b></h5>
                                 <div className="row">
                                     <div className="col">
-                                        {this.renderTypes()}
-                                        {this.props.videos.release_date.slice(-4)}
+                                        {renderTypes(videos)}
+                                        {videos.release_date.slice(-4)}
                                         <i className="bi bi-dot"/>
-                                        {this.props.videos.mpaa_rating}
+                                        {videos.mpaa_rating}
                                         <i className="bi bi-dot"/>
-                                        {`${this.props.videos.duration_in_minutes} minutes`}
+                                        {`${videos.duration_in_minutes} minutes`}
                                     </div>
                                 </div>
 
-                                <p className="card-text">{this.props.videos.plot}</p>
+                                <p className="card-text">{videos.plot}</p>
+
                                 <hr/>
 
                                 <div className="row">
                                     <h6>
-                                        <b>Director</b> <span>{`${this.props.videos.director[0].name} ${this.props.videos.director[0].surname}`}</span>
+                                        <b>Director</b> <span>{`${videos.director[0].name} ${videos.director[0].surname}`}</span>
                                     </h6>
                                 </div>
 
                                 <hr/>
+
                                 <h6><b>Actors</b></h6>
-                                {this.renderArtists()}
+                                {renderArtists(videos)}
+
                                 <hr/>
 
                                 <div className="row">
                                     <h6>
-                                        <b>Country</b> <span>{this.props.videos.country}</span>
+                                        <b>Country</b> <span>{videos.country}</span>
                                     </h6>
                                 </div>
 
                                 <div className="wrapper">
-                                    <iframe src={this.props.videos.trailer} title="YouTube video player" frameBorder="0"
+                                    <iframe src={videos.trailer} title="YouTube video player" frameBorder="0"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen/>
                                 </div>
                             </div>
@@ -105,15 +98,8 @@ class Video extends React.Component {
                 </div>
             );
         } else {
-            return <p className="text-center">Loading..</p>
+            return <p className="text-center">Loading..</p>;
         }
     }
-}
 
-const mapStateToProps = (state, ownProps) => {
-    // console.log('ownProps',ownProps)
-    // console.log('state',state)
-    return {videos: state.videos};
-}
-
-export default connect(mapStateToProps, {fetchVideo})(Video);
+export default Video;

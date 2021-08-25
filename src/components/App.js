@@ -19,10 +19,6 @@ const App = () => {
                 </Switch>
 
             </Router>
-
-            {/*<Navbar />*/}
-            {/*<Search />*/}
-            {/*<VideoList />*/}
         </div>
     );
 }
