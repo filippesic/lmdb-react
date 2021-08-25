@@ -40,8 +40,7 @@ class VideoList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    // console.log('Video list',state.videos)
-    return {...state}
+    return {videos: state.videos}
 }
 
 export default connect(mapStateToProps, {fetchVideos})(VideoList);

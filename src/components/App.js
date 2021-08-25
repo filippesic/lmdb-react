@@ -8,7 +8,7 @@ import history from "../history";
 
 const App = () => {
     return (
-        <div className="container">
+        <div className="container-fluid">
             <Navbar />
             <Search />
 

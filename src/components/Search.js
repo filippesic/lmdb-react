@@ -1,42 +1,57 @@
 import React from "react";
-import GenresList from "./GenresList";
-import ArtistList from "./ArtistList";
 import {searchVideo} from "../actions";
 import {connect} from "react-redux";
+import {Form, Field} from "react-final-form";
+import GenresList from "./GenresList";
+import ArtistList from "./ArtistList";
 
 class Search extends React.Component {
     state = {searchTerm: ''}
 
-    onFormSubmit = (event) => {
-        event.preventDefault()
-
-        this.props.searchVideo(this.state.searchTerm)
+    onFormSubmit = async ({searchInput}) => {
+        this.props.searchVideo(searchInput)
     }
 
     onInputChange = (event) => {
         this.setState({searchTerm: event.target.value})
     }
 
+    renderInput = ({input}) => {
+        return (
+            <div>
+                <input className="form-control me-2" {...input} autoComplete="off"/>
+            </div>
+        );
+    }
+
     render() {
-        // console.log(this.props)
         return (
             <div className="col-7 mx-auto" style={{marginTop: '7%'}}>
-                <form onSubmit={this.onFormSubmit}>
-                    <input className="form-control me-2" type="search" placeholder="Search" value={this.state.searchTerm}
-                           onChange={this.onInputChange} aria-label="Search"/>
-                    <button className="btn btn-outline-success w-100 my-2" type="submit">Search</button>
-                    <div className="row">
-                        <GenresList />
-                        <ArtistList />
-                    </div>
-                </form>
+                <Form onSubmit={this.onFormSubmit}
+                      validate={(formValues) => {
+                          const errors = {};
+                          if(!formValues.searchInput) {
+                              errors.searchInput = 'You need to enter a search word!'
+                          }
+                          return errors
+                      }}
+                      render={({handleSubmit}) => (
+                          <form onSubmit={handleSubmit}>
+                              <Field name="searchInput" component={this.renderInput} />
+                              <button className="btn btn-outline-success w-100 my-2">Search</button>
+                              <div className="row">
+                                  <GenresList />
+                                  <ArtistList />
+                              </div>
+                          </form>
+                      )}
+                />
             </div>
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    // console.log('penzionisan', state.videos)
     return {videos: state.videos}
 }
 
