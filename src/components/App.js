@@ -17,7 +17,6 @@ const App = () => {
                     <Route path="/" exact component={VideoList} />
                     <Route path="/videos/:id" exact component={Video} />
                 </Switch>
-
             </Router>
         </div>
     );

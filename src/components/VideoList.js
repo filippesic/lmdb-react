@@ -5,9 +5,15 @@ import {useDispatch, useSelector} from "react-redux";
 const VideoList = () => {
     const dispatch = useDispatch();
     const videos = useSelector((state) => state.videos)
+    const searchInput = useSelector(state => state.searchInput);
 
     useEffect(() => {
-        dispatch(fetchVideos());
+        if (searchInput) {
+            dispatch(fetchVideos(searchInput));
+        } else {
+            dispatch(fetchVideos());
+        }
+
     },[dispatch])
 
     const shortenDescription = (description) => {
@@ -29,7 +35,7 @@ const VideoList = () => {
                 );
             })
         }
-        return <h2 className="mt-5">No movies found!</h2>
+        return <h2 className="mt-5">No movies found! VIDEO LIST</h2>
     }
 
     return (

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import {searchVideos} from "../actions";
+import {fetchVideos} from "../actions";
 
 const NavbarSearch = () => {
     const [searchInput, setSearchInput] = useState('');
@@ -9,7 +9,7 @@ const NavbarSearch = () => {
     const onSearchSubmit = (e) => {
         e.preventDefault();
 
-        dispatch(searchVideos(searchInput));
+        dispatch(fetchVideos(searchInput));
     }
 
     return (

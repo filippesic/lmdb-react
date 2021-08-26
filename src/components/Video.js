@@ -34,14 +34,13 @@ const Video = (props) => {
         }
     };
 
-    const renderTypes = ({type}) => {
-        return type.map(type => {
-            return (
-                <span key={type}>{type.type}<i className="bi bi-dot"/></span>
-            );
-        })
-    };
-
+    // const renderTypes = ({type}) => {
+    //     return type.map(type => {
+    //         return (
+    //             <span key={type}>{type.type}<i className="bi bi-dot"/></span>
+    //         );
+    //     })
+    // };
         if (videos.release_date) {
             return (
                 <div className="card col-10 mx-auto my-5">
@@ -49,14 +48,13 @@ const Video = (props) => {
                         <div className="col-md-3 text-md-center text-end">
                             <img src={videos.poster} className="w-100 rounded-start" style={{ objectFit: 'contain' }} alt="..."/>
                             {renderGenres(videos)}
-                            {/*<div className="col ms-2">{renderGenres(videos)}</div>*/}
                         </div>
                         <div className="col-md-8">
                             <div className="card-body pt-1">
                                 <h5 className="card-title"><b className="fs-3">{videos.name}</b></h5>
                                 <div className="row">
                                     <div className="col">
-                                        {renderTypes(videos)}
+                                        {videos.type[0].type}
                                         {videos.release_date.slice(-4)}
                                         <i className="bi bi-dot"/>
                                         {videos.mpaa_rating}
@@ -98,7 +96,7 @@ const Video = (props) => {
                 </div>
             );
         } else {
-            return <p className="text-center">Loading..</p>;
+            return <h2 className="mt-5">No video found! VIDEO COMPOMENT</h2>;
         }
     }
 

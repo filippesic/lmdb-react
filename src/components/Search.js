@@ -1,13 +1,27 @@
-import React from "react";
+import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import {searchVideos} from "../actions";
+import {fetchVideos, searchInput} from "../actions";
 import {Field, Form} from "react-final-form";
 import GenresList from "./GenresList";
 import ArtistList from "./ArtistList";
 
 const Search = () => {
     const dispatch = useDispatch();
-    const onFormSubmit = props => dispatch(searchVideos(props.searchInput))
+    const onFormSubmit = props => {
+        dispatch(searchInput(props.searchInput))
+        localStorage.setItem('searchInput', props.searchInput)
+        dispatch(fetchVideos(props.searchInput, genre, artist))
+    }
+    const [genre, setGenres] = useState(null);
+    const [artist, setArtist] = useState(null);
+
+
+    const onGenreChange = (id) => {
+        setGenres(id);
+    }
+    const onArtistChange = (id) => {
+        setArtist(id);
+    }
 
     const renderInput = ({input}) => {
         return (
@@ -26,8 +40,8 @@ const Search = () => {
                         <button className="btn btn-outline-success w-100 my-2">Search</button>
 
                         <div className="row">
-                            <GenresList/>
-                            <ArtistList/>
+                            <GenresList onGenreChange={onGenreChange}/>
+                            <ArtistList onArtistChange={onArtistChange}/>
                         </div>
                     </form>
                 )}
