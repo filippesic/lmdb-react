@@ -1,34 +1,31 @@
-import React from "react";
-import {connect} from "react-redux";
+import React, {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import {fetchGenres} from "../actions";
 
-class GenresList extends React.Component {
-    componentDidMount() {
-        this.props.fetchGenres();
-    }
+const GenresList = () => {
+    const dispatch = useDispatch();
+    const genres = useSelector(state => state.genres);
 
-    renderGenres() {
-        return this.props.genres.map(genre => {
+    useEffect(() => {
+        dispatch(fetchGenres());
+    })
+
+    const renderGenres = (genres) => {
+        return genres.map(genre => {
             return (
                 <option key={genre.id} value={genre.id}>{genre.name}</option>
             );
         })
     }
 
-    render() {
         return (
             <div className="col">
                 <select className="form-select" aria-label="Default select example">
                     <option defaultValue>Select a genre</option>
-                    {this.renderGenres()}
+                    {renderGenres(genres)}
                 </select>
             </div>
         );
-    }
 }
 
-const mapStateToProps = (state) => {
-    return {genres: state.genres}
-}
-
-export default connect(mapStateToProps, {fetchGenres})(GenresList);
+export default GenresList;
