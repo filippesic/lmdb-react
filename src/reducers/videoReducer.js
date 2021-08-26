@@ -4,7 +4,7 @@ export default (state = [], action) => {
             return action.payload.videos;
         case 'FETCH_VIDEO':
             return action.payload;
-        case 'SEARCH_VIDEO':
+        case 'SEARCH_VIDEOS':
             return action.payload.videos;
         default:
             return state;

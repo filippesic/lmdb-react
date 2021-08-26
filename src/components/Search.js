@@ -1,14 +1,13 @@
 import React from "react";
 import {useDispatch} from "react-redux";
-import {searchVideo} from "../actions";
+import {searchVideos} from "../actions";
 import {Field, Form} from "react-final-form";
 import GenresList from "./GenresList";
 import ArtistList from "./ArtistList";
 
-const Search = (props) => {
-    console.log(props)
+const Search = () => {
     const dispatch = useDispatch();
-    const onFormSubmit = async (props) => dispatch(searchVideo(props.searchInput))
+    const onFormSubmit = props => dispatch(searchVideos(props.searchInput))
 
     const renderInput = ({input}) => {
         return (

@@ -29,6 +29,7 @@ const VideoList = () => {
                 );
             })
         }
+        return <h2 className="mt-5">No movies found!</h2>
     }
 
     return (
